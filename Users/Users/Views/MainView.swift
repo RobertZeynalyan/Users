@@ -89,34 +89,29 @@ struct MainView: View {
         .frame(width: UIScreen.main.bounds.width - 30)
         .padding()
     }
-    
     @ViewBuilder
     private var userList: some View {
-        List {
-            ForEach(filteredUsers, id: \.self) { user in
-                UserDetailView(user: user)
-                    .onTapGesture {
-                        selectedUser = user
-                        showEditView = true
-                    }
-            }
-            .sheet(isPresented: $showEditView) {
-                EditUserView(user: $selectedUser) { user in
-                    
+        VStack{
+            List {
+                ForEach(filteredUsers, id: \.self) { user in
+                    UserDetailView(user: user)
+                        .onTapGesture {
+                            selectedUser = user
+                            showEditView = true
+                        }
                 }
             }
-//            .navigationTitle("Users")
-//            .sheet(isPresented: $showEditView) {
-//                if let selectedUser = selectedUser {
-//                    EditUserView(user: selectedUser) { updatedUserData in
-//                        if let index = allUsers.firstIndex(where: { $0.id == updatedUserData.id }) {
-//                            allUsers[index] = updatedUserData
-//                            saveUserData()
-//                        }
-//                        showEditView = false
-//                    }
-//                }
-//            }
+                .sheet(isPresented: $showEditView) {
+                if let selectedUser = selectedUser {
+                    EditUserView(user: selectedUser) { updatedUserData in
+                        if let index = allUsers.firstIndex(where: { $0.id == updatedUserData.id }) {
+                            allUsers[index] = updatedUserData
+                            saveUserData()
+                        }
+                        showEditView = false
+                    }
+                }
+            }
         }
     }
     
@@ -125,7 +120,6 @@ struct MainView: View {
             .frame(width: UIScreen.main.bounds.width - 30)
             .textFieldStyle(.roundedBorder)
     }
-    
     
     
     private func createMenuRowView(_ filter: UserFilter) -> some View {

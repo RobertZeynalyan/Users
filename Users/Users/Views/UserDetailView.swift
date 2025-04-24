@@ -23,7 +23,6 @@ struct UserDetailView: View {
                 .frame(width: 100, height: 100)
                 .cornerRadius(16)
                 .clipped()
-            
             VStack(alignment: .leading) {
                 Text("\(user.fullName)")
                     .padding(.bottom, 5)

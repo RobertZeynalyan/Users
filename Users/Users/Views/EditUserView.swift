@@ -19,19 +19,68 @@ struct EditUserView: View {
     
     var body: some View {
         detailPage
+        Divider()
+        VStack(spacing: -65) {
+            MapView()
+            userDetailsInfo
+        }
+        Spacer()
+        saveButton
+        Spacer()
     }
     
     private var detailPage: some View {
-        HStack(spacing: 5) {
-            Button {
-                print("Back")
-            } label: {
-                Text("Back")
-            }
+        HStack(alignment: .center) {
             Text("\(user.fullName)")
-                .font(.largeTitle)
-            
-            Divider()
+                .font(.title3)
+        }
+        .padding(.top, 20)
+    }
+    
+    private var saveButton: some View {
+        HStack {
+            Button {
+                print("asd")
+            } label: {
+                Text("Save")
+                    .padding(.horizontal, 50)
+                    .padding(.vertical, 10)
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(25)
+            }
+
         }
     }
+    
+    private var userDetailsInfo: some View {
+        VStack(spacing: 15) {
+            Image("\(user.profileImage)")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 130, height: 130)
+                .cornerRadius(65)
+                .clipped()
+            Text("\(user.fullName)")
+                .font(.title2)
+            
+            HStack(spacing: 200) {
+                VStack(alignment: .leading,spacing: 20) {
+                    Text("Gender:")
+                    Text("Telephone:")
+                    Text("Adress:")
+                }
+                .font(.caption)
+                .foregroundColor(.init(white: 0.1, opacity: 0.3))
+                
+                VStack(alignment: .trailing, spacing: 20) {
+                    Text("\(user.gender.rawValue)")
+                    Text("\(user.phoneNumber)")
+                    Text("\(user.adress)")
+                }
+                .font(.caption)
+            }
+        }
+    }
+
 }
