@@ -14,11 +14,46 @@ enum UserFilter: String, CaseIterable, Codable {
 
 struct MainView: View {
     
+    @State private var selectedUser: User?
+    @State private var showEditView: Bool = false
+    @State private var index = 0
     @State private var searchText : String = ""
-    @State private var filteredUsers: [User] = []
+    @State private var filteredUsers: [User] = [User (
+        id: "",
+        description: "asdasda",
+        profileImage: "robert",
+        name: "Robert",
+        lastName: "Zeynalyan",
+        phoneNumber: "+37494696633",
+        country: "Kotayk marz, q.Abovyan",
+        adress: "Saralanj 15",
+        gender: .male,
+        isSaved: true
+    ), User ( id: "",
+        description: "asdasda",
+        profileImage: "artak",
+        name: "Artak",
+        lastName: "Yepremyan",
+        phoneNumber: "+37455250666",
+        country: "Kotayk marz, q.Abovyan",
+        adress: "Hatisi 5",
+        gender: .male,
+        isSaved: true
+    ), User (
+        id: "",
+        description: "asdasda",
+        profileImage: "edo",
+        name: "Edik",
+        lastName: "Mesropyan",
+        phoneNumber: "37444248025",
+        country: "Kotayk marz, q.Abovyan",
+        adress: "Hatisi 34",
+        gender: .male,
+        isSaved: true
+    )]
     @State private var allUsers: [User] = [] {
         didSet {
-            saveNotes()
+            saveUserData()
             self.filterNotes()
         }
     }
@@ -35,35 +70,16 @@ struct MainView: View {
     }
     
     private var navBar: some View {
-        VStack(spacing: -10) {
+        VStack() {
             filterMenu
             searchTextField
             Spacer()
+            userList
         }
     }
     
     @ViewBuilder
     private var filterMenu: some View {
-//        Menu(currentFilter.rawValue, content: {
-//            ForEach(UserFilter.allCases, id: \.self){ filter in
-//                return createMenuRowView(filter)
-//            }
-//        })
-//        .tint(.black)
-//        .font(.system(size: 25, weight: .semibold))
-//        .pickerStyle(SegmentedPickerStyle())
-//        Menu {
-//            ForEach(UserFilter.allCases, id: \.self) { filter in
-//                createMenuRowView(filter)
-//            }
-//        } label: {
-//            Label(currentFilter.rawValue, systemImage: "line.3.horizontal.decrease.circle")
-//                .font(.system(size: 25, weight: .semibold))
-//                .foregroundColor(.black)
-//                .padding()
-//                .background(Color.gray.opacity(0.1))
-//                .cornerRadius(8)
-//        }
         Picker("Filter", selection: $currentFilter) {
             ForEach(UserFilter.allCases, id: \.self) { filter in
                 Text(filter.rawValue).tag(filter)
@@ -74,13 +90,42 @@ struct MainView: View {
         .padding()
     }
     
+    @ViewBuilder
+    private var userList: some View {
+        List {
+            ForEach(filteredUsers, id: \.self) { user in
+                UserDetailView(user: user)
+                    .onTapGesture {
+                        selectedUser = user
+                        showEditView = true
+                    }
+            }
+            .sheet(isPresented: $showEditView) {
+                EditUserView(user: $selectedUser) { user in
+                    
+                }
+            }
+//            .navigationTitle("Users")
+//            .sheet(isPresented: $showEditView) {
+//                if let selectedUser = selectedUser {
+//                    EditUserView(user: selectedUser) { updatedUserData in
+//                        if let index = allUsers.firstIndex(where: { $0.id == updatedUserData.id }) {
+//                            allUsers[index] = updatedUserData
+//                            saveUserData()
+//                        }
+//                        showEditView = false
+//                    }
+//                }
+//            }
+        }
+    }
+    
     private var searchTextField: some View {
         TextField("  Search", text: $searchText)
-//            .background(Color.gray.opacity(0.2))
-//            .cornerRadius(8)
             .frame(width: UIScreen.main.bounds.width - 30)
             .textFieldStyle(.roundedBorder)
     }
+    
     
     
     private func createMenuRowView(_ filter: UserFilter) -> some View {
@@ -106,9 +151,10 @@ struct MainView: View {
     }
 }
 
+
 extension MainView {
     
-    func saveNotes() {
+    func saveUserData() {
         if let encoded = try? JSONEncoder().encode(allUsers) {
             UserDefaults.standard.set(encoded, forKey: "SavedUsersKey")
         }

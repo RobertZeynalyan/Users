@@ -7,28 +7,32 @@
 
 import SwiftUI
 
-struct UserDetailView {
+struct UserDetailView: View {
     
     private var user: User
-    @State private var isCompleted: Bool
     
-    init(user: User, isCompleted: Bool) {
+    init(user: User) {
         self.user = user
-        self.isCompleted = isCompleted
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 15) {
             Image("\(user.profileImage)")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+                .frame(width: 100, height: 100)
+                .cornerRadius(16)
+                .clipped()
             
             VStack(alignment: .leading) {
-                Text("\(user.name)")
+                Text("\(user.fullName)")
                     .padding(.bottom, 5)
-                Text("\(user.gender), \(user.phoneNumber)")
-                Text("\(user.country)")
-                Text("\(user.adress)")
+                VStack(alignment: .leading) {
+                    Text("\(user.gender), \(user.phoneNumber)")
+                    Text("\(user.country)")
+                    Text("\(user.adress)")
+                }
+                .foregroundColor(.init(.lightGray))
             }
         }
     }
