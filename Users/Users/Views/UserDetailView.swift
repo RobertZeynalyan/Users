@@ -17,19 +17,19 @@ struct UserDetailView: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            Image("\(user.profileImage)")
+            Image("edo")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 100, height: 100)
                 .cornerRadius(16)
                 .clipped()
             VStack(alignment: .leading) {
-                Text("\(user.fullName)")
+                Text(user.name.fullName)
                     .padding(.bottom, 5)
                 VStack(alignment: .leading) {
-                    Text("\(user.gender), \(user.phoneNumber)")
-                    Text("\(user.country)")
-                    Text("\(user.adress)")
+                    Text("\(user.gender), \(user.phone)")
+                    Text("\(user.location.country)")
+                    Text("\(user.location.street.name)")
                 }
                 .foregroundColor(.init(.lightGray))
             }

@@ -29,9 +29,17 @@ struct EditUserView: View {
         Spacer()
     }
     
+//    Text("\(user.name.title " " + user.name.first + " " + user.name.last)")
+//        .padding(.bottom, 5)
+//    VStack(alignment: .leading) {
+//        Text("\(user.gender), \(user.phone)")
+//        Text("\(user.location.country)")
+//        Text("\(user.location.street.name)")
+//    }
+    
     private var detailPage: some View {
         HStack(alignment: .center) {
-            Text("\(user.fullName)")
+            Text(user.name.fullName)
                 .font(.title3)
         }
         .padding(.top, 20)
@@ -49,19 +57,18 @@ struct EditUserView: View {
                     .foregroundColor(.white)
                     .cornerRadius(25)
             }
-
         }
     }
     
     private var userDetailsInfo: some View {
         VStack(spacing: 15) {
-            Image("\(user.profileImage)")
+            Image("edo")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 130, height: 130)
                 .cornerRadius(65)
                 .clipped()
-            Text("\(user.fullName)")
+            Text(user.name.fullName)
                 .font(.title2)
             
             HStack(spacing: 200) {
@@ -74,13 +81,12 @@ struct EditUserView: View {
                 .foregroundColor(.init(white: 0.1, opacity: 0.3))
                 
                 VStack(alignment: .trailing, spacing: 20) {
-                    Text("\(user.gender.rawValue)")
-                    Text("\(user.phoneNumber)")
-                    Text("\(user.adress)")
+                    Text("\(user.gender), \(user.phone)")
+                    Text("\(user.location.country)")
+                    Text("\(user.location.street.name)")
                 }
                 .font(.caption)
             }
         }
     }
-
 }
